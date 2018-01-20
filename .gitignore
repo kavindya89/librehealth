@@ -6,6 +6,5 @@ target
 *.iml
 *.iws
 *.ipr
-*.swagger-codegen-ignore
 *~
 .idea
