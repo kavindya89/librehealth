@@ -1,11 +1,14 @@
 package org.librehealth.convert.service;
 
 import org.hl7.fhir.dstu3.model.Address;
-import org.hl7.fhir.dstu3.model.Identifier;
-import org.hl7.fhir.dstu3.model.Patient;
+import org.hl7.fhir.dstu3.model.StringType;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.librehealth.convert.model.ModelRepresentation;
+
+import java.util.List;
 
 public class AddressUtil {
 
@@ -62,4 +65,24 @@ public class AddressUtil {
         return null;
     }
 
+    public static ModelRepresentation getAddressObject(Address address, String uri) {
+        String id = address.getId();
+        ModelRepresentation addressRep = new ModelRepresentation();
+        JSONObject addressObj = new JSONObject();
+        String display = "";
+
+        addressObj.put("uuid", id);
+        addressObj.put("display", display);
+        JSONArray links = new JSONArray();
+        JSONObject link = new JSONObject();
+        String addressUri = uri + "address/" + id;
+        link.put("ref", "self");
+        link.put("uri", addressUri);
+        links.add(link);
+        addressObj.put("links", links);
+        addressRep.setId(id);
+        addressRep.setDisplay(display);
+        addressRep.setRepresentation(addressObj);
+        return addressRep;
+    }
 }

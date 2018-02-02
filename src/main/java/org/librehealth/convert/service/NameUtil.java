@@ -5,9 +5,13 @@ import org.hl7.fhir.dstu3.model.HumanName;
 import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.StringType;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.librehealth.convert.model.ModelRepresentation;
+
+import java.util.List;
 
 public class NameUtil {
 
@@ -33,6 +37,33 @@ public class NameUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ModelRepresentation getNameObject(HumanName humanName, String uri) {
+        String id = humanName.getId();
+        ModelRepresentation nameRep = new ModelRepresentation();
+        JSONObject nameObj = new JSONObject();
+        String display = "";
+        List<StringType> givenNames = humanName.getGiven();
+        for(StringType givenName : givenNames) {
+            display += givenName + " ";
+        }
+
+        display = humanName.getFamily();
+
+        nameObj.put("uuid", id);
+        nameObj.put("display", display);
+        JSONArray links = new JSONArray();
+        JSONObject link = new JSONObject();
+        String nameUri = uri + "name/" + id;
+        link.put("ref", "self");
+        link.put("uri", nameUri);
+        links.add(link);
+        nameObj.put("links", links);
+        nameRep.setId(id);
+        nameRep.setDisplay(display);
+        nameRep.setRepresentation(nameObj);
+        return nameRep;
     }
 
 }

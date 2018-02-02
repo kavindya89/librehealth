@@ -11,6 +11,11 @@ public class Main {
         FHIRPatientService patientService = new FHIRPatientService();
         Patient patient = patientService.getPatient(patientUuid);
         String encoded = ctx.newJsonParser().encodeResourceToString(patient);
+        Patient fhirPatient = ctx.newJsonParser().parseResource(Patient.class, encoded);
+        String librehealthJson = patientService.getPatient(fhirPatient);
+        System.out.println("CONVERTED LIBRE HEALTH PATIENT TO FHIR");
         System.out.println(encoded);
+        System.out.println("CONVERTED FHIR PATIENT TO LIBRE HEALTH");
+        System.out.println(librehealthJson);
     }
 }

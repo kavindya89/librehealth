@@ -9,8 +9,13 @@ public class FHIRPatientService {
 
     public Patient getPatient(String patientId) {
         ApacheHttpClientGet apacheHttpClientGet = ApacheHttpClientGet.getInstance();
-        String libreHealthPerson = apacheHttpClientGet.executeGet(baseUrl + patientId);
-        Patient patient = PatientUtil.getFHIRPatientObject(libreHealthPerson);
+        String libreHealthPatient = apacheHttpClientGet.executeGet(baseUrl + patientId);
+        Patient patient = PatientUtil.getFHIRPatientObject(libreHealthPatient);
         return patient;
+    }
+
+    public String getPatient(Patient patient) {
+        String librehalthPatient = PatientUtil.getFHIRPatientObject(patient, baseUrl);
+        return librehalthPatient;
     }
 }
